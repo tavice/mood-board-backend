@@ -6,6 +6,7 @@ const session = require('express-session');
 const methodOverride = require('method-override')
 require('dotenv').config();
 const moodboardController = require('./controllers/moodboards.js')
+const imageUploadController = require('./controllers/imageuploads.js')   
 
 
 // Connect to MongoDB
@@ -44,6 +45,7 @@ app.use(methodOverride('_method'))
 
 //Moodboard controller
 app.use('/mood-boards', moodboardController)
+app.use('/image-uploads', imageUploadController)
 
 //app.get('/', (req, res) => res.send('Hello World Test!'));
 
