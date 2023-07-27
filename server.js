@@ -5,6 +5,9 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const methodOverride = require('method-override')
 require('dotenv').config();
+const cors = require('cors');
+
+//Get controllers
 const moodboardController = require('./controllers/moodboards.js')
 const imageUploadController = require('./controllers/imageuploads.js') 
 const annotationController= require('./controllers/annotations.js'); 
@@ -45,6 +48,20 @@ app.use(express.json());
 
 //This will allow use to make DELETE and UPDATE request
 app.use(methodOverride('_method'))
+
+//Cors
+const whitelist = ['http://localhost:3000', 'https://moodboard-app.herokuapp.com/']
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (whitelist.indexOf(origin) !== -1 || !origin){
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    }
+}
+
+app.use(cors(corsOptions))
 
 //Moodboard controller
 app.use('/mood-boards', moodboardController)
