@@ -50,7 +50,7 @@ app.use(express.json());
 app.use(methodOverride('_method'))
 
 //Cors
-const whitelist = ['http://localhost:3000', 'https://moodboard-app.herokuapp.com/']
+const whitelist = ['http://localhost:3000','http://localhost:3001',  'https://moodboard-app.herokuapp.com/']
 const corsOptions = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin) !== -1 || !origin){

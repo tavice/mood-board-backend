@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const itemSchema = new mongoose.Schema({
-    type: String,
-    content: String,
+    type: { type: String, required: true, enum: ['image', 'text'] },
+    content: { type: String, required: true },
     position: {
       x: Number,
       y: Number
