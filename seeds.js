@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 const MoodBoard = require('./models/moodboards.js');
+const Annotation = require('./models/annotations.js');
 require('dotenv').config();
 
 // Connect to your MongoDB server
 mongoose.connect(process.env.DATABASE_URL, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true, 
-})
+  useNewUrlParser: true,
+  useUnifiedTopology: true, 
+});
 
 // Check the connection
 const db = mongoose.connection;
@@ -15,7 +16,6 @@ db.once('open', function() {
   console.log('Database connected');
 });
 
-// Define some seed data
 const seedMoodBoards = [
   {
     name: 'Kitchen Design',
@@ -46,15 +46,38 @@ const seedMoodBoards = [
   // Add more mood boards as needed
 ];
 
+const seedAnnotations = [
+  {
+    content: 'A sample annotation for kitchen mood board',
+    position: { x: 100, y: 200 }
+  },
+  {
+    content: 'A sample annotation for living room mood board',
+    position: { x: 50, y: 150 }
+  },
+  // Add more annotations as needed
+];
+
 // Seed the database
 async function seedDB() {
-  // Clear the collection
+  // Clear the collections
   await MoodBoard.deleteMany({});
-  console.log('Removed all mood boards');
+  await Annotation.deleteMany({});
+  console.log('Removed all mood boards and annotations');
 
   // Insert the seed data
-  await MoodBoard.insertMany(seedMoodBoards);
-  console.log('Added seed mood boards');
+  for (let i = 0; i < seedMoodBoards.length; i++) { //ood boards and annotations are created in a loop. For each iteration, a mood board is created first, and its _id is then used to create a corresponding annotation. 
+    const moodBoard = new MoodBoard(seedMoodBoards[i]);
+    const savedMoodBoard = await moodBoard.save();
+
+    const annotation = new Annotation({
+      ...seedAnnotations[i],
+      moodboardId: savedMoodBoard._id
+    });
+    await annotation.save();
+  }
+
+  console.log('Added seed mood boards and annotations');
 
   // Close the connection
   mongoose.connection.close();

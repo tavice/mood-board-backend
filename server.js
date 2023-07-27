@@ -7,7 +7,9 @@ const methodOverride = require('method-override')
 require('dotenv').config();
 const moodboardController = require('./controllers/moodboards.js')
 const imageUploadController = require('./controllers/imageuploads.js') 
-const annotationController= require('./controllers/annotations.js');  
+const annotationController= require('./controllers/annotations.js'); 
+
+
 
 
 // Connect to MongoDB
